@@ -44,7 +44,7 @@ int main()
         break;
 
     case 3:
-        roundRobin(input);
+        roundRobin(Y, Z, input);
         break;
     }
 
