@@ -26,58 +26,66 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
 {
     const int SENTINEL = 999;
     int i;
-    int time = 1;
+    int time = 0;
 
-    // start = input[0][3];
-    // end = input[0][4];
-    // wait = input[0][5];
+    // input[0][0] = id
+    // input[0][1] = arrival time
+    // input[0][2] = burst time
+    // input[0][3] = start time
+    // input[0][4] = end time
+    // input[0][5] = wait time
 
     // check if all processes are done
-    while (isDone(size, input))
+    // while (!isDone(size, input) && time < 10)
+    while (!isDone(size, input))
     {
+        printf("Time: %d\n", time);
+        printArray(size, input);
+
         sortByBurstTime(size, input);
-        sortByWaitTime(size, input);
+        sortByArrivalTime(size, input);
 
         // check if process has arrived
         if (input[0][1] == 0)
         {
-            // check if the process has already ended
-            if (input[0][4] == -1)
+            // check if process has already started before. if not, note it down.
+            if (input[0][3] == -1)
+                input[0][3] = time;
+
+            input[0][2]--;
+
+            // if burst time became zero after decrementing, assign sentinel value of 999 to arrival time to push it to the back of the array
+            // also take note of the end time
+            if (input[0][2] == 0)
             {
-                // check if process has already started before. if not, note it down.
-                if (input[0][3] == -1)
-                    input[0][3] = time;
-
-                input[0][2]--;
-
-                // if burst time became zero after decrementing, assign sentinel value of 999 to wait time to push it to the back of the array
-                // also take note of the end time
-                if (input[0][2] == 0)
-                {
-                    input[0][1] = SENTINEL;
-                    input[0][4] = time;
-                }
+                input[0][1] = SENTINEL;
+                input[0][4] = time + 1;
             }
         }
 
-        // add wait time since this process has not yet arrived
+        // add wait time and decrease arrival time since this process has not yet arrived
         else
         {
+            input[0][1]--;
             input[0][5]++;
         }
 
-        // check if the rest of the processes are done except for the current process
-        if (input[1][1] != SENTINEL)
-            // increment wait times for all unfinished processes while decreasing the arrival time for processes not zero
-            for (i = 1; i < size; i++)
+        // arrival and wait time adjustments for unfinished processes
+        for (i = 1; i < size; i++)
+            if (input[i][1] != SENTINEL)
             {
-                // check if there still are unfinished processes after since there can still be more of them midway
-                if (input[i][1] == SENTINEL)
+                // decrease arrival time unless the arrival time is already zero
+                if (input[i][1] > 0)
+                    input[i][1]--;
+                // increase waiting time for those with arrival time zero
+                else
                     input[i][5]++;
             }
 
         time++;
     }
+
+    int j;
 
     output(size, input);
 }
@@ -103,7 +111,7 @@ void sortByBurstTime(int size, int input[][COL])
                 }
 }
 
-void sortByWaitTime(int size, int input[][COL])
+void sortByArrivalTime(int size, int input[][COL])
 {
     int temp;
     int step, i, j;
@@ -144,8 +152,8 @@ int isDone(int size, int input[][COL])
     {
         if (input[i][1] != 999)
             sentinel = 0;
-        else
-            i++;
+
+        i++;
     }
 
     return sentinel;
@@ -159,4 +167,19 @@ void output(int size, int input[][COL])
 
     for (i = 0; i < size; i++)
         printf("P[%d] Start time: %d End time: %d | Waiting time: %d\n", input[i][0], input[i][3], input[i][4], input[i][5]);
+}
+
+void printArray(int size, int input[][COL])
+{
+    int i, j;
+
+    for (int i = 0; i < size; i++)
+    {
+        for (int j = 0; j < COL; j++)
+            printf("%d ", input[i][j]);
+
+        printf("\n");
+    }
+
+    printf("\n\n");
 }
