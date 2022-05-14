@@ -2,7 +2,7 @@
 #include <string.h>
 #include "algorithm.h"
 
-const int COL = 3;
+const int COL = 6;
 
 void firstComeFirstServe(int size, int input[][COL])
 {

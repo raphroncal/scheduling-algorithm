@@ -20,8 +20,7 @@ int main()
 
     fscanf(fp, "%d %d %d", &X, &Y, &Z);
 
-    // extend 2d array to accommodate START, END, and WAITING times respectively
-    int input[Y][COL + 3];
+    int input[Y][COL];
 
     for (i = 0; i < Y; i++)
     {
