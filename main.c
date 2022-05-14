@@ -25,8 +25,8 @@ int main()
     for (i = 0; i < Y; i++)
     {
         fscanf(fp, "%d %d %d", &input[i][0], &input[i][1], &input[i][2]);
-        input[i][3] = 0;
-        input[i][4] = 0;
+        input[i][3] = -1;
+        input[i][4] = -1;
         input[i][5] = 0;
     }
 
