@@ -1,44 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "algorithm.h"
 
 int main()
 {
     int X, Y, Z;
     int i;
     char filename[20];
-    FILE *fptr;
+    FILE *fp;
 
     printf("Enter file name: ");
     scanf("%s", filename);
 
-    if ((fptr = fopen(filename, "r")) == NULL)
+    if ((fp = fopen(filename, "r")) == NULL)
     {
         printf("%s not found", filename);
         exit(1);
     }
 
-    fscanf(fptr, "%d %d %d", &X, &Y, &Z);
+    fscanf(fp, "%d %d %d", &X, &Y, &Z);
 
-    int input[Y][3];
+    int input[Y][COL];
 
     for (i = 0; i < Y; i++)
     {
-        fscanf(fptr, "%d %d %d", &input[i][0], &input[i][1], &input[i][2]);
+        fscanf(fp, "%d %d %d", &input[i][0], &input[i][1], &input[i][2]);
     }
 
-    fclose(fptr);
+    fclose(fp);
 
-    printf("X = %d\nY = %d\nZ = %d\n\n", X, Y, Z);
-
-    int j;
-    printf("Input:\n");
-    for (i = 0; i < Y; i++)
+    switch (X)
     {
-        for (j = 0; j < 3; j++)
-        {
-            printf("%d ", input[i][j]);
-        }
-        printf("\n");
+    case 0:
+        firstComeFirstServe(Y, input);
+        break;
+
+    case 1:
+        shortestJobFirst(input);
+        break;
+
+    case 2:
+        shortestRemainingTimeFirst(Y, input);
+        break;
+
+    case 3:
+        roundRobin(input);
+        break;
     }
 
     return 0;
