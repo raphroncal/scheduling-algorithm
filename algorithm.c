@@ -53,7 +53,6 @@ void firstComeFirstServe(int size, int input[][COL])
 void shortestJobFirst(int size, int input[][COL])
 {
     int i; // loop ctr
-	float avg_wt = 0; // average waiting time
 	
     printf("SJF\n");
     
@@ -81,13 +80,8 @@ void shortestJobFirst(int size, int input[][COL])
     	if (input[i][5] < 0) // if waiting time is < 0
     		input[i][5] = 0;
     		
-    	avg_wt += input[i][5];
 	}
-    
-    avg_wt /= size;
-    
     output(size, input);
-    printf("Average Waiting Time: %.1f\n", avg_wt);
 }
 
 /**
