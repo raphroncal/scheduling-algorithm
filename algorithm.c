@@ -3,6 +3,13 @@
 
 const int COL = 6; // # of columns (3) + appended columns (start, end, & wait times)
 
+// input[0][0] = id
+// input[0][1] = arrival time
+// input[0][2] = burst time
+// input[0][3] = start time
+// input[0][4] = end time
+// input[0][5] = wait time
+
 void firstComeFirstServe(int size, int input[][COL])
 {
     printf("FCFS\n");
@@ -26,13 +33,6 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
     const int SENTINEL = 999;
     int i;
     int time = 0;
-
-    // input[0][0] = id
-    // input[0][1] = arrival time
-    // input[0][2] = burst time
-    // input[0][3] = start time
-    // input[0][4] = end time
-    // input[0][5] = wait time
 
     // check if all processes are done
     while (!isDone(size, input))
