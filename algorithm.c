@@ -2,7 +2,6 @@
 #include "algorithm.h"
 
 const int COL = 6; // # of columns (3) + appended columns (start, end, & wait times)
-const int SENTINEL = 999;
 
 // input[0][0] = id
 // input[0][1] = arrival time
@@ -93,6 +92,7 @@ void shortestJobFirst(int size, int input[][COL])
  */
 void shortestRemainingTimeFirst(int size, int input[][COL])
 {
+    const int SENTINEL = 999;
     int i;
     int time = 0;
 
@@ -154,6 +154,7 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
  */
 void roundRobin(int size, int quantum, int input[][COL])
 {
+    const int SENTINEL = 999;
     int i, j, k;
     int q;
     int time = 0;
@@ -220,10 +221,15 @@ void roundRobin(int size, int quantum, int input[][COL])
         }
     }
 
-    // printf("\n\n");
     output(size, input);
 }
 
+/**
+ * @brief sorts the processes by their burst times in ascending order
+ *
+ * @param size - number of processes
+ * @param input - input file in the form of 2d array
+ */
 void sortByBurstTime(int size, int input[][COL])
 {
     int temp;
@@ -240,6 +246,12 @@ void sortByBurstTime(int size, int input[][COL])
                 }
 }
 
+/**
+ * @brief sorts the processes by their arrival times in ascending order
+ *
+ * @param size - number of processes
+ * @param input - input file in the form of 2d array
+ */
 void sortByArrivalTime(int size, int input[][COL])
 {
     int temp;
@@ -256,6 +268,12 @@ void sortByArrivalTime(int size, int input[][COL])
                 }
 }
 
+/**
+ * @brief sorts the processes by their end times in ascending order for output purposes
+ *
+ * @param size - number of processes
+ * @param input - input file in the form of 2d array
+ */
 void sortByEndTime(int size, int input[][COL])
 {
     int temp;
@@ -318,6 +336,12 @@ int hasAnyArrived(int size, int input[][COL])
     return sentinel;
 }
 
+/**
+ * @brief displays each process' start, end, and waiting times
+ *
+ * @param size - number of processes
+ * @param input  - input file in the form of 2d array
+ */
 void output(int size, int input[][COL])
 {
     int i;
@@ -334,6 +358,12 @@ void output(int size, int input[][COL])
     printf("Average waiting time: %.1f", avg_wt / size);
 }
 
+/**
+ * @brief displays the 2d array for testing purposes and has no effect on the final output
+ *
+ * @param size - number of processes
+ * @param input - input file in the form of 2d array
+ */
 void printArray(int size, int input[][COL])
 {
     int i, j;
