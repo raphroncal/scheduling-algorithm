@@ -124,7 +124,6 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
         else
         {
             input[0][1]--;
-            input[0][5]++;
         }
 
         // arrival and wait time adjustments for unfinished processes
