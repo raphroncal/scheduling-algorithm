@@ -1,14 +1,18 @@
 #include <stdio.h>
-// #include <string.h>
 #include "algorithm.h"
 
 const int COL = 6; // # of columns (3) + appended columns (start, end, & wait times)
 const int SENTINEL = 999;
 
+// input[0][0] = id
+// input[0][1] = arrival time
+// input[0][2] = burst time
+// input[0][3] = start time
+// input[0][4] = end time
+// input[0][5] = wait time
+
 void firstComeFirstServe(int size, int input[][COL])
 {
-    printf("FCFS\n");
-    // TODO
     int i;
 
     sortByArrivalTime(size, input);
@@ -24,9 +28,7 @@ void firstComeFirstServe(int size, int input[][COL])
         input[i][3] = input[i - 1][4]; // start = end[i-1]
 
         while (input[i][3] < input[i][1]) // for IDLE TIME (if the next process hasn't arrived, increment the start time)
-        {
             input[i][3]++;
-        }
 
         input[i][4] = input[i][2] + input[i][3];
         input[i][5] = (input[i][4] - input[i][1]) - input[i][2];
@@ -55,15 +57,7 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
     int i;
     int time = 0;
 
-    // input[0][0] = id
-    // input[0][1] = arrival time
-    // input[0][2] = burst time
-    // input[0][3] = start time
-    // input[0][4] = end time
-    // input[0][5] = wait time
-
     // check if all processes are done
-    // while (!isDone(size, input) && time < 10)
     while (!isDone(size, input))
     {
         printf("Time: %d\n", time);
@@ -111,8 +105,6 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
         time++;
     }
 
-    int j;
-
     output(size, input);
 }
 
@@ -129,10 +121,11 @@ void roundRobin(int size, int quantum, int input[][COL])
     int q = 0;
     int time = 0;
 
+    sortByArrivalTime(size, input);
+
     // check if all processes are finished
-    while (!isDone(size, input) && time < 10)
+    while (!isDone(size, input))
     {
-        printArray(size, input);
         // check if there is at least one process with arrival time zero
         if (hasAnyArrived(size, input))
         {
@@ -142,7 +135,7 @@ void roundRobin(int size, int quantum, int input[][COL])
                 if (input[i][1] == 0)
                 {
                     // check if start time has been noted before
-                    if (input[i][3] != -1)
+                    if (input[i][3] == -1)
                         input[i][3] = time;
 
                     // decrease burst time by time quantum until burst time becomes zero or time quantum has been fulfilled
@@ -192,6 +185,7 @@ void roundRobin(int size, int quantum, int input[][COL])
             time++;
         }
     }
+    printf("Is Done: %d\n\n", isDone(size, input));
 
     output(size, input);
 }
@@ -201,8 +195,8 @@ void sortByBurstTime(int size, int input[][COL])
     int temp;
     int step, i, j;
 
-    for (int step = 0; step < size - 1; ++step)
-        for (int i = 0; i < size - step - 1; ++i)
+    for (step = 0; step < size - 1; ++step)
+        for (i = 0; i < size - step - 1; ++i)
             if (input[i][2] > input[i + 1][2])
                 for (j = 0; j < COL; j++)
                 {
@@ -217,8 +211,8 @@ void sortByArrivalTime(int size, int input[][COL])
     int temp;
     int step, i, j;
 
-    for (int step = 0; step < size - 1; ++step)
-        for (int i = 0; i < size - step - 1; ++i)
+    for (step = 0; step < size - 1; ++step)
+        for (i = 0; i < size - step - 1; ++i)
             if (input[i][1] > input[i + 1][1])
                 for (j = 0; j < COL; j++)
                 {
@@ -233,8 +227,8 @@ void sortByEndTime(int size, int input[][COL])
     int temp;
     int step, i, j;
 
-    for (int step = 0; step < size - 1; ++step)
-        for (int i = 0; i < size - step - 1; ++i)
+    for (step = 0; step < size - 1; ++step)
+        for (i = 0; i < size - step - 1; ++i)
             if (input[i][4] > input[i + 1][4])
                 for (j = 0; j < COL; j++)
                 {
