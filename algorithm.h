@@ -14,7 +14,7 @@ int hasAnyArrived(int, int[][COL]);
 
 void firstComeFirstServe(int, int[][COL]);
 
-void shortestJobFirst(int[][COL]);
+void shortestJobFirst(int, int[][COL]);
 
 void shortestRemainingTimeFirst(int, int[][COL]);
 
