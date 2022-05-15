@@ -2,6 +2,7 @@
 #include "algorithm.h"
 
 const int COL = 6; // # of columns (3) + appended columns (start, end, & wait times)
+const int SENTINEL = 999;
 
 // input[0][0] = id
 // input[0][1] = arrival time
@@ -30,7 +31,6 @@ void shortestJobFirst(int input[][COL])
  */
 void shortestRemainingTimeFirst(int size, int input[][COL])
 {
-    const int SENTINEL = 999;
     int i;
     int time = 0;
 
@@ -61,7 +61,6 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
                 input[0][4] = time + 1;
             }
         }
-
         // add wait time and decrease arrival time since this process has not yet arrived
         else
         {
@@ -96,8 +95,78 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
  * @param q - time quantum
  * @param input - input file in the form of 2d array
  */
-void roundRobin(int size, int q, int input[][COL])
+void roundRobin(int size, int quantum, int input[][COL])
 {
+    int i, j, k;
+    int q = 0;
+    int time = 0;
+    int temp[size][COL];
+
+    // check if all processes are finished
+    while (!isDone(size, input) && time < 10)
+    {
+        printArray(size, input);
+        // check if there is at least one process with arrival time zero
+        if (hasAnyArrived(size, input))
+        {
+            for (i = 0; i < size; i++)
+            {
+                // check if the current process has arrived
+                if (input[i][1] == 0)
+                {
+                    // check if start time has been noted before
+                    if (input[i][3] != -1)
+                        input[i][3] = time;
+
+                    // decrease burst time by time quantum until burst time becomes zero or time quantum has been fulfilled
+                    while (input[i][2] != 0 && q < quantum)
+                    {
+                        input[i][2]--;
+                        q++;
+                        time++;
+                    }
+
+                    // check if burst time has been depleted
+                    if (input[i][2] == 0)
+                    {
+                        input[0][1] = SENTINEL;
+                        input[i][4] = time + 1;
+                    }
+
+                    // decrease arrival time for unfinished processes and increase wait time for waiting processes
+                    for (j = 0; j < size; j++)
+                    {
+                        // skip the current process
+                        if (j != i || input[j][1] != SENTINEL)
+                        {
+                            // adjust time values depending on value of q
+                            for (k = 0; k < q; k++)
+                            {
+                                // decrease arrival time unless the arrival time is already zero
+                                if (input[i][1] > 0)
+                                    input[i][1]--;
+                                // increase waiting time for those with arrival time zero
+                                else
+                                    input[i][5]++;
+                            }
+                        }
+                    }
+                }
+                // else, increment i and move to next process
+            }
+        }
+        // if there are none, increase time and decrease arrival time for all processes except for those who are finished
+        else
+        {
+            for (i = 0; i < size; i++)
+                if (input[i][1] != SENTINEL)
+                    input[i][1]--;
+
+            time++;
+        }
+    }
+
+    output(size, input);
 }
 
 void sortByBurstTime(int size, int input[][COL])
@@ -148,6 +217,13 @@ void sortByEndTime(int size, int input[][COL])
                 }
 }
 
+/**
+ * @brief checks all processes if they are finished by checking the arrival time
+ *
+ * @param size - number of processes
+ * @param input - input file in the form of 2d array
+ * @return int - 1 if all processes are done, 0 otherwise
+ */
 int isDone(int size, int input[][COL])
 {
     int sentinel = 1;
@@ -157,6 +233,29 @@ int isDone(int size, int input[][COL])
     {
         if (input[i][1] != 999)
             sentinel = 0;
+
+        i++;
+    }
+
+    return sentinel;
+}
+
+/**
+ * @brief checks all processes if at least one has an arrival time of zero
+ *
+ * @param size - number of processes
+ * @param input - input file in the form of 2d array
+ * @return int - 1 if there is a process that has arrived, 0 otherwise
+ */
+int hasAnyArrived(int size, int input[][COL])
+{
+    int sentinel = 0;
+    int i = 0;
+
+    while (!sentinel && i < size)
+    {
+        if (input[i][1] == 0)
+            sentinel = 1;
 
         i++;
     }

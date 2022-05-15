@@ -10,6 +10,8 @@ void sortByArrivalTime(int, int[][COL]);
 
 int isDone(int, int[][COL]);
 
+int hasAnyArrived(int, int[][COL]);
+
 void firstComeFirstServe(int, int[][COL]);
 
 void shortestJobFirst(int[][COL]);
