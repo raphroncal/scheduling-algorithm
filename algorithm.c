@@ -1,14 +1,8 @@
 #include <stdio.h>
+// #include <string.h>
 #include "algorithm.h"
 
 const int COL = 6; // # of columns (3) + appended columns (start, end, & wait times)
-
-// input[0][0] = id
-// input[0][1] = arrival time
-// input[0][2] = burst time
-// input[0][3] = start time
-// input[0][4] = end time
-// input[0][5] = wait time
 
 void firstComeFirstServe(int size, int input[][COL])
 {
@@ -25,7 +19,7 @@ void shortestJobFirst(int input[][COL])
 /**
  * @brief implements the SRTF CPU scheduling algorithm
  *
- * @param size - number of processes
+ * @param size - number of parameters
  * @param input - input file in the form of 2d array
  */
 void shortestRemainingTimeFirst(int size, int input[][COL])
@@ -34,7 +28,15 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
     int i;
     int time = 0;
 
+    // input[0][0] = id
+    // input[0][1] = arrival time
+    // input[0][2] = burst time
+    // input[0][3] = start time
+    // input[0][4] = end time
+    // input[0][5] = wait time
+
     // check if all processes are done
+    // while (!isDone(size, input) && time < 10)
     while (!isDone(size, input))
     {
         printf("Time: %d\n", time);
@@ -50,7 +52,6 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
             if (input[0][3] == -1)
                 input[0][3] = time;
 
-            // decrement burst time
             input[0][2]--;
 
             // if burst time became zero after decrementing, assign sentinel value of 999 to arrival time to push it to the back of the array
@@ -89,14 +90,8 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
     output(size, input);
 }
 
-/**
- * @brief implements the round robin CPU scheduling algorithm
- *
- * @param size - number of processes
- * @param q - time quantum
- * @param input - input file in the form of 2d array
- */
-void roundRobin(int size, int q, int input[][COL])
+// TODO
+void roundRobin(int size, int queue, int input[][COL])
 {
 }
 
