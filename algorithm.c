@@ -5,6 +5,12 @@
 const int COL = 6; // # of columns (3) + appended columns (start, end, & wait times)
 const int SENTINEL = 999;
 
+/**
+ * @brief implements the FCFS CPU scheduling algorithm
+ *
+ * @param size - number of parameters
+ * @param input - input file in the form of 2d array
+ */
 void firstComeFirstServe(int size, int input[][COL])
 {
     printf("FCFS\n");
@@ -44,10 +50,50 @@ void firstComeFirstServe(int size, int input[][COL])
     printf("Average Waiting Time: %.1f\n", avg_wt);
 }
 
-void shortestJobFirst(int input[][COL])
+/**
+ * @brief implements the SJF CPU scheduling algorithm
+ *
+ * @param size - number of parameters
+ * @param input - input file in the form of 2d array
+ */
+void shortestJobFirst(int size, int input[][COL])
 {
+    int i; // loop ctr
+	float avg_wt = 0; // average waiting time
+	
     printf("SJF\n");
-    // TODO
+    
+    sortByArrivalTime(size, input);
+    sortByBurstTime(size, input);
+    
+    // first process
+    input[0][3] = input[0][1]; // start time = arrival time
+    input[0][4] = input[0][1] + input[0][2]; // end = arrival + burst
+    input[0][5] = (input[0][4] - input[0][1]) - input[0][2]; // wait = (end - arrival) - burst, aka 0
+    
+    // succeeding processes
+    for (i = 1; i < size; i++)
+    {
+    	input[i][3] = input[i-1][4]; // start = end[i-1]
+    	
+    	while (input[i][3] < input[i][1]) // for IDLE TIME (if the next process hasn't arrived, increment the start time)
+    	{
+    		input[i][3]++;
+		}
+    	
+    	input[i][4] = input[i][2] + input[i][3]; 
+    	input[i][5] = (input[i][4] - input[i][1]) - input[i][2]; 
+    	
+    	if (input[i][5] < 0) // if waiting time is < 0
+    		input[i][5] = 0;
+    		
+    	avg_wt += input[i][5];
+	}
+    
+    avg_wt /= size;
+    
+    output(size, input);
+    printf("Average Waiting Time: %.1f\n", avg_wt);
 }
 
 /**
