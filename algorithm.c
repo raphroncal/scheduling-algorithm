@@ -55,8 +55,8 @@ void shortestJobFirst(int size, int input[][COL])
 {
     int i; // loop ctr
 
-    sortByArrivalTime(size, input);
     sortByBurstTime(size, input);
+    sortByArrivalTime(size, input);
 
     // first process
     input[0][3] = input[0][1];                               // start time = arrival time
