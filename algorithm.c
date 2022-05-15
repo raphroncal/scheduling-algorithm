@@ -54,7 +54,6 @@ void firstComeFirstServe(int size, int input[][COL])
 void shortestJobFirst(int size, int input[][COL])
 {
     int i; // loop ctr
-    printf("SJF\n");
 
     sortByArrivalTime(size, input);
     sortByBurstTime(size, input);
