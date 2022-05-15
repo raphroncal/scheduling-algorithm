@@ -10,7 +10,6 @@ void firstComeFirstServe(int size, int input[][COL])
     printf("FCFS\n");
     // TODO
     int i;
-    float avg_wt = 0; // average waiting time
 
     sortByArrivalTime(size, input);
 
@@ -34,14 +33,9 @@ void firstComeFirstServe(int size, int input[][COL])
 
         if (input[i][5] < 0) // if waiting time is < 0
             input[i][5] = 0;
-
-        avg_wt += input[i][5];
     }
 
-    avg_wt /= size;
-
     output(size, input);
-    printf("Average Waiting Time: %.1f\n", avg_wt);
 }
 
 void shortestJobFirst(int input[][COL])
@@ -134,7 +128,6 @@ void roundRobin(int size, int quantum, int input[][COL])
     int i, j, k;
     int q = 0;
     int time = 0;
-    int temp[size][COL];
 
     // check if all processes are finished
     while (!isDone(size, input) && time < 10)
@@ -300,11 +293,17 @@ int hasAnyArrived(int size, int input[][COL])
 void output(int size, int input[][COL])
 {
     int i;
+    float avg_wt = 0;
 
     sortByEndTime(size, input);
 
     for (i = 0; i < size; i++)
+    {
         printf("P[%d] Start time: %d End time: %d | Waiting time: %d\n", input[i][0], input[i][3], input[i][4], input[i][5]);
+        avg_wt += input[i][5];
+    }
+
+    printf("Average waiting time: %.1f", avg_wt / size);
 }
 
 void printArray(int size, int input[][COL])
