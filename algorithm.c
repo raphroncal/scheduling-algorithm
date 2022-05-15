@@ -120,7 +120,7 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
                 input[0][4] = time + 1;
             }
         }
-        // add wait time and decrease arrival time since this process has not yet arrived
+        // decrease arrival time since this process has not yet arrived
         else
         {
             input[0][1]--;
