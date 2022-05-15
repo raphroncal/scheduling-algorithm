@@ -99,9 +99,6 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
     // check if all processes are done
     while (!isDone(size, input))
     {
-        printf("Time: %d\n", time);
-        printArray(size, input);
-
         sortByBurstTime(size, input);
         sortByArrivalTime(size, input);
 
@@ -112,6 +109,7 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
             if (input[0][3] == -1)
                 input[0][3] = time;
 
+            // decrement burst time
             input[0][2]--;
 
             // if burst time became zero after decrementing, assign sentinel value of 999 to arrival time to push it to the back of the array
@@ -157,7 +155,7 @@ void shortestRemainingTimeFirst(int size, int input[][COL])
 void roundRobin(int size, int quantum, int input[][COL])
 {
     int i, j, k;
-    int q = 0;
+    int q;
     int time = 0;
 
     sortByArrivalTime(size, input);
@@ -170,6 +168,7 @@ void roundRobin(int size, int quantum, int input[][COL])
         {
             for (i = 0; i < size; i++)
             {
+                q = 0;
                 // check if the current process has arrived
                 if (input[i][1] == 0)
                 {
@@ -188,28 +187,24 @@ void roundRobin(int size, int quantum, int input[][COL])
                     // check if burst time has been depleted
                     if (input[i][2] == 0)
                     {
-                        input[0][1] = SENTINEL;
-                        input[i][4] = time + 1;
+                        input[i][1] = SENTINEL;
+                        input[i][4] = time;
                     }
 
                     // decrease arrival time for unfinished processes and increase wait time for waiting processes
                     for (j = 0; j < size; j++)
-                    {
                         // skip the current process
-                        if (j != i || input[j][1] != SENTINEL)
-                        {
+                        if (j != i && input[j][1] != SENTINEL)
                             // adjust time values depending on value of q
                             for (k = 0; k < q; k++)
                             {
                                 // decrease arrival time unless the arrival time is already zero
-                                if (input[i][1] > 0)
-                                    input[i][1]--;
+                                if (input[j][1] > 0)
+                                    input[j][1]--;
                                 // increase waiting time for those with arrival time zero
                                 else
-                                    input[i][5]++;
+                                    input[j][5]++;
                             }
-                        }
-                    }
                 }
                 // else, increment i and move to next process
             }
@@ -224,8 +219,8 @@ void roundRobin(int size, int quantum, int input[][COL])
             time++;
         }
     }
-    printf("Is Done: %d\n\n", isDone(size, input));
 
+    // printf("\n\n");
     output(size, input);
 }
 

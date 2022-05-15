@@ -39,7 +39,7 @@ int main()
         break;
 
     case 1:
-        shortestJobFirst(input);
+        shortestJobFirst(Y, input);
         break;
 
     case 2:
