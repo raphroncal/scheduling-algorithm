@@ -53,34 +53,8 @@ void firstComeFirstServe(int size, int input[][COL])
  */
 void shortestJobFirst(int size, int input[][COL])
 {
-    int i; // loop ctr
-
     sortByBurstTime(size, input);
-    sortByArrivalTime(size, input);
-
-    // first process
-    input[0][3] = input[0][1];                               // start time = arrival time
-    input[0][4] = input[0][1] + input[0][2];                 // end = arrival + burst
-    input[0][5] = (input[0][4] - input[0][1]) - input[0][2]; // wait = (end - arrival) - burst, aka 0
-
-    // succeeding processes
-    for (i = 1; i < size; i++)
-    {
-        input[i][3] = input[i - 1][4]; // start = end[i-1]
-
-        while (input[i][3] < input[i][1]) // for IDLE TIME (if the next process hasn't arrived, increment the start time)
-        {
-            input[i][3]++;
-        }
-
-        input[i][4] = input[i][2] + input[i][3];
-        input[i][5] = (input[i][4] - input[i][1]) - input[i][2];
-
-        if (input[i][5] < 0) // if waiting time is < 0
-            input[i][5] = 0;
-    }
-
-    output(size, input);
+    firstComeFirstServe(size, input);
 }
 
 /**
