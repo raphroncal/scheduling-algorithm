@@ -207,8 +207,8 @@ void sortByBurstTime(int size, int input[][COL])
     int temp;
     int step, i, j;
 
-    for (step = 0; step < size - 1; ++step)
-        for (i = 0; i < size - step - 1; ++i)
+    for (step = 0; step < size - 1; step++)
+        for (i = 0; i < size - step - 1; i++)
             if (input[i][2] > input[i + 1][2])
                 for (j = 0; j < COL; j++)
                 {
@@ -229,8 +229,8 @@ void sortByArrivalTime(int size, int input[][COL])
     int temp;
     int step, i, j;
 
-    for (step = 0; step < size - 1; ++step)
-        for (i = 0; i < size - step - 1; ++i)
+    for (step = 0; step < size - 1; step++)
+        for (i = 0; i < size - step - 1; i++)
             if (input[i][1] > input[i + 1][1])
                 for (j = 0; j < COL; j++)
                 {
@@ -251,8 +251,8 @@ void sortByEndTime(int size, int input[][COL])
     int temp;
     int step, i, j;
 
-    for (step = 0; step < size - 1; ++step)
-        for (i = 0; i < size - step - 1; ++i)
+    for (step = 0; step < size - 1; step++)
+        for (i = 0; i < size - step - 1; i++)
             if (input[i][4] > input[i + 1][4])
                 for (j = 0; j < COL; j++)
                 {
